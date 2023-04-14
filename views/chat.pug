@@ -1,0 +1,33 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title=title
+    link(rel='stylesheet', href='/style.css')
+    link(rel="stylesheet", href="/chat.css")
+  body
+    include flash.pug 
+    
+    header#chat_header
+      .left
+        img.profile_pic(src='/profile_pics/profile_pic.jpg', alt='Profile picture')
+        div 
+          h2=otherParticipantUsername
+          p#status
+      #vertical_dots
+        .dot
+        .dot
+        .dot
+
+    main#main_chat
+      
+    form.chat_container
+      img(src='/images/microphone_btn.jpg', alt='')
+      textarea#chat_box(name='chat', cols='45', rows='1', placeholder='Text...')
+      button(type="submit") 
+        img#send_btn(src='/images/send_btn.jpg', alt='')
+      
+    script(src="/socket.io/socket.io.js") 
+    script(src="/chat.js") 

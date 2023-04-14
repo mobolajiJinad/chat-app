@@ -1,0 +1,43 @@
+
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title=title
+
+    link(rel="stylesheet", href="/style.css")
+    link(rel="stylesheet", href="/auth.css")
+  body 
+    include ./flash.pug
+    .container
+      .auth_container
+        form(action='/auth/login', method='POST')
+          label(for='username') Username
+          input#username(type='text', name='username', required='')
+
+          label(for='password') Password
+          input#password(type='password', name='password', required='')
+
+          .checkbox_container
+            input#show_password(type='checkbox', name='show_password')
+            label(for='show_password') Show password
+
+          input(type='submit', value='Log in')
+
+          p
+            | Don&apos;t have an account yet? 
+            a(href='/auth/signup') Sign up
+    
+    script.
+      const showPassword = document.getElementById("show_password");
+      const password = document.getElementById("password");
+
+      showPassword.addEventListener("change", (e) => {
+        if (showPassword.checked) {
+          password.type = "text";
+        } else {
+          password.type = "password";
+        }
+      });
