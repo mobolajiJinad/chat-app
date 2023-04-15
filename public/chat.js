@@ -1,5 +1,6 @@
 const chatForm = document.querySelector(".chat_container");
 const chatsContainer = document.getElementById("main_chat");
+const verticalDots = document.getElementById("vertical_dots");
 
 const chatID = window.location.pathname.split("/")[2];
 
@@ -23,8 +24,10 @@ chatForm.addEventListener("submit", (e) => {
 
   const msg = chatBox.value;
 
-  socket.emit("chatMessage", msg);
-  outputMessage(msg, "sent");
+  if (msg && !msg.length <= 0) {
+    socket.emit("chatMessage", { msg, id: IDs.userID });
+    outputMessage(msg, "sent");
+  }
 
   chatBox.value = "";
   chatBox.focus();
@@ -44,3 +47,17 @@ const outputMessage = (message, status) => {
   chatsContainer.appendChild(div);
   chatsContainer.scrollTop = chatsContainer.scrollHeight;
 };
+
+messages.forEach((message) => {
+  if (message.from === IDs.userID) {
+    outputMessage(message.messageText, "sent");
+  } else if (message.from === IDs.otherParticipantID) {
+    outputMessage(message.messageText, "received");
+  } else {
+    console.log("What");
+  }
+});
+
+verticalDots.addEventListener("click", () => {
+  document.querySelector(".menu").classList.toggle("show_menu");
+});

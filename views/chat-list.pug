@@ -7,6 +7,8 @@ html(lang='en')
 
     link(rel="stylesheet", href="/style.css")
     link(rel='stylesheet', href='/chat-list.css')
+
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js" referrerpolicy="no-referrer")
   body
     include ./flash.pug
     script.
@@ -19,26 +21,28 @@ html(lang='en')
 
     #wrapper 
       section.chats
-        .chat
-          img.profile-pic(src='/profile_pics/profile_pic.jpg', alt='Profile Picture')
-          .chat-details
-            h3.username Kansola
-            p.message-preview Ut enim ad minim veniam, quis nostrud.
-          .chat-meta
-            p.time 12:30 PM
-            span.unread-counter 3
+        if data.length <= 0
+          p.no_contact_msg You don't have any recent chats 
+        else 
+          each datum in data 
+            form#form(action=`/chat/${datum.id}`, method="POST") 
+              input(type="hidden", name="otherParticipantID", value=datum.otherParticipantID)
+              a(href="#", onclick="submitForm(event)") 
+                .chat 
+                  img(src="/profile_pics/profile_pic.jpg", alt="Profile Picture" class="profile-pic")
+                  .chat-details 
+                    h3.username #{datum.otherParticipantUsername}
 
-        .chat
-          img.profile-pic(src='/profile_pics/profile_pic.jpg', alt='Profile Picture')
-          .chat-details
-            h3.username Juju
-            p.message-preview Ut enim ad minim veniam, quis nostrud.
-          .chat-meta
-            p.time 12:30 
-            
+        //- .chat
+        //-   img.profile-pic(src='/profile_pics/profile_pic.jpg', alt='Profile Picture')
+        //-   .chat-details
+        //-     h3.username Kansola
+        //-     p.message-preview Ut enim ad minim veniam, quis nostrud.
+        //-   .chat-meta
+        //-     p.time 12:30 PM
+        //-     span.unread-counter 3
+
       #new_chat
         p +
 
-    
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js" referrerpolicy="no-referrer")
     script(src="/chat-list.js") 

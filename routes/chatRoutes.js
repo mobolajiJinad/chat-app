@@ -9,9 +9,17 @@ router.route("/").get(async (req, res) => {
   const { userID } = req.user;
 
   const user = await User.findById(userID);
-  const chats = await Chat.find({ participants: { $in: userID } });
+  const chats = await Chat.find({ participants: { $in: userID } }).populate({
+    path: "participants",
+    select: "username _id",
+    match: { _id: { $ne: userID } },
+  });
 
-  console.log(chats);
+  const data = chats.map((chat) => ({
+    id: chat._id,
+    otherParticipantUsername: chat.participants[0].username,
+    otherParticipantID: chat.participants[0]._id,
+  }));
 
   const username = user.username;
 
@@ -19,6 +27,7 @@ router.route("/").get(async (req, res) => {
     title: "Chat List",
     username,
     userID,
+    data,
     msg: { error: req.flash("error"), success: req.flash("success") },
   });
 });
@@ -36,6 +45,10 @@ router
         res.redirect("/auth/login");
       });
       return;
+    }
+
+    if (id === "delete") {
+      res.redirect("/chat");
     }
 
     res.redirect("/chat");
@@ -63,15 +76,16 @@ router
       });
     }
 
-    if (chat) {
-      console.log(chat);
-    }
+    const messages = chat.messages ? chat.messages : [];
 
+    const IDs = { userID, otherParticipantID };
     const otherParticipantUsername = otherParticipant.username;
 
     res.render("chat", {
       title: "Chat",
       otherParticipantUsername,
+      IDs,
+      messages,
       msg: { error: req.flash("error"), success: req.flash("success") },
     });
   });

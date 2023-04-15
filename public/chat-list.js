@@ -38,6 +38,7 @@ const createBody = (data) => {
     input.value = user.otherParticipantID;
 
     const a = document.createElement("a");
+    a.id = "form_submit";
     a.href = "#";
 
     const innerHTML = `
@@ -61,4 +62,9 @@ const createBody = (data) => {
   });
 
   return section;
+};
+
+const submitForm = (e) => {
+  e.preventDefault();
+  document.getElementById("form").submit();
 };

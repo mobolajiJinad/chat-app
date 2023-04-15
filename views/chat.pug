@@ -9,6 +9,10 @@ html(lang='en')
     link(rel="stylesheet", href="/chat.css")
   body
     include flash.pug 
+
+    script. 
+      const messages = !{JSON.stringify(messages)};
+      const IDs = !{JSON.stringify(IDs)}
     
     header#chat_header
       .left
@@ -16,10 +20,17 @@ html(lang='en')
         div 
           h2=otherParticipantUsername
           p#status
-      #vertical_dots
-        .dot
-        .dot
-        .dot
+
+      nav 
+        #vertical_dots
+          .dot
+          .dot
+          .dot
+        
+        ul.menu 
+          li 
+            a(href="/chat/logout") Logout 
+            a(href="/chat/delete") Delete chat 
 
     main#main_chat
       

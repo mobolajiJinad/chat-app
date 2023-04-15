@@ -47,6 +47,13 @@
   color: inherit;
 }
 
+.no_contact_msg {
+  margin-top: 1.25rem;
+  text-align: center;
+  color: #888;
+  font-size: 1.25rem;
+}
+
 .chat {
   display: flex;
   align-items: center;

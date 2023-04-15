@@ -13,16 +13,17 @@ module.exports = function (io) {
       socket.on("chatMessage", async (msg) => {
         const chat = await Chat.findById(chatID);
 
+        const to = chat.participants.find((otherID) => otherID !== msg.id);
         const newMessage = await Message.create({
-          from: chat.participants[0],
-          to: chat.participants[1],
-          messageText: msg,
+          from: msg.id,
+          to: to,
+          messageText: msg.msg,
         });
 
-        chat.chats.push(newMessage);
+        chat.messages.push(newMessage);
         await chat.save();
 
-        socket.broadcast.to(chatID).emit("message", msg);
+        socket.broadcast.to(chatID).emit("message", msg.msg);
       });
 
       socket.on("disconnect", () => {
