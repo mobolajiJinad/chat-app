@@ -25,11 +25,8 @@ const createBody = (data) => {
   data.forEach((user) => {
     const sortedIDs = [userID, user.otherParticipantID].sort();
     const idString = sortedIDs.join("");
-    console.log(
-      `userID: ${userID}, otherParticipantId: ${user.otherParticipantID},idString: ${idString}`
-    );
+
     const roomUUID = uuid.v5(idString, UUID_NAMESPACE_URL);
-    console.log(`roomUUID: ${roomUUID}`);
 
     const form = document.createElement("form");
     form.action = `/chat/${roomUUID}`;

@@ -9,6 +9,9 @@ router.route("/").get(async (req, res) => {
   const { userID } = req.user;
 
   const user = await User.findById(userID);
+  const chats = await Chat.find({ participants: { $in: userID } });
+
+  console.log(chats);
 
   const username = user.username;
 
@@ -34,6 +37,8 @@ router
       });
       return;
     }
+
+    res.redirect("/chat");
   })
   .post(async (req, res) => {
     const { id } = req.params;

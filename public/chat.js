@@ -2,19 +2,18 @@ const chatForm = document.querySelector(".chat_container");
 const chatsContainer = document.getElementById("main_chat");
 
 const chatID = window.location.pathname.split("/")[2];
-console.log(chatID);
+
 const socket = io();
 
+socket.emit("joinChat", chatID);
+
 socket.on("status", (msg) => {
-  if (msg === "undefined") {
-    document.getElementById("status").innerText = "offline";
-  } else {
-    document.getElementById("status").innerText = msg;
-  }
+  document.getElementById("status").innerText = msg;
 });
 
 socket.on("message", (message) => {
   outputMessage(message, "received");
+  document.getElementById("status").innerText = "online";
 });
 
 chatForm.addEventListener("submit", (e) => {
@@ -24,7 +23,7 @@ chatForm.addEventListener("submit", (e) => {
 
   const msg = chatBox.value;
 
-  socket.emit("chatMessage", { msg, chatID });
+  socket.emit("chatMessage", msg);
   outputMessage(msg, "sent");
 
   chatBox.value = "";

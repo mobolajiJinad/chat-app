@@ -14,7 +14,7 @@ const chatSchema = mongoose.Schema(
         ref: "User",
       },
     ],
-    chats: [Message.schema],
+    messages: [Message.schema],
   },
   { timeStamps: true }
 );

@@ -23,4 +23,6 @@ router.route("/contacts/getList").post(async (req, res) => {
   res.status(200).json({ otherUsersData });
 });
 
+router.route("/saveMessage").post(async (req, res) => {});
+
 module.exports = router;

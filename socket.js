@@ -1,20 +1,34 @@
+const Message = require("./model/Message");
+const Chat = require("./model/Chat");
+
 module.exports = function (io) {
   io.on("connection", (socket) => {
     console.log("New client connected");
 
-    socket.broadcast.emit("status", "online");
+    socket.on("joinChat", (chatID) => {
+      socket.join(chatID);
 
-    // To the single client: socket.emit()
-    // To everybody: io.emit()
-    // To everyone except the client: socket.broadcast.emit()
+      socket.broadcast.emit("status", "online");
 
-    socket.on("chatMessage", (msg, chatID) => {
-      socket.broadcast.to(chatID).emit("message", msg);
-    });
+      socket.on("chatMessage", async (msg) => {
+        const chat = await Chat.findById(chatID);
 
-    socket.on("disconnect", () => {
-      socket.broadcast.emit("status", "offline");
-      console.log("Client disconnected");
+        const newMessage = await Message.create({
+          from: chat.participants[0],
+          to: chat.participants[1],
+          messageText: msg,
+        });
+
+        chat.chats.push(newMessage);
+        await chat.save();
+
+        socket.broadcast.to(chatID).emit("message", msg);
+      });
+
+      socket.on("disconnect", () => {
+        socket.broadcast.emit("status", "offline");
+        console.log("Client disconnected");
+      });
     });
   });
 
