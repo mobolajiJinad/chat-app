@@ -7,7 +7,6 @@
 }
 
 body {
-  height: 100vh;
   background-color: #e5ddd5;
 }
 
@@ -18,7 +17,7 @@ img {
 }
 
 #chat_header {
-  height: 11%;
+  height: 4.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -93,7 +92,7 @@ img {
 }
 
 #main_chat {
-  height: 81%;
+  height: calc(100vh - 8rem);
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
@@ -120,7 +119,7 @@ img {
 }
 
 .chat_container {
-  height: 8%;
+  height: 3.5rem;
   width: 100%;
   display: flex;
   align-items: center;

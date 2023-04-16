@@ -28,43 +28,20 @@ const createBody = (data) => {
 
     const roomUUID = uuid.v5(idString, UUID_NAMESPACE_URL);
 
-    const form = document.createElement("form");
-    form.action = `/chat/${roomUUID}`;
-    form.method = "POST";
-
-    const input = document.createElement("input");
-    input.type = "hidden";
-    input.name = "otherParticipantID";
-    input.value = user.otherParticipantID;
-
     const a = document.createElement("a");
-    a.id = "form_submit";
-    a.href = "#";
+    a.classList.add("chat");
+    a.href = `/chat/${user.otherParticipantID}&&&${roomUUID}`;
 
     const innerHTML = `
-    <div class="chat">
       <img class="profile-pic" src="/profile_pics/profile_pic.jpg" alt="Profile Picture">
       <div class="chat-details">
         <h3 class="username">${user.username}</h3>
       </div>
-    </div>
     `;
 
     a.innerHTML = innerHTML;
-    form.appendChild(input);
-    form.appendChild(a);
-    section.appendChild(form);
-
-    a.addEventListener("click", (e) => {
-      e.preventDefault();
-      form.submit();
-    });
+    section.appendChild(a);
   });
 
   return section;
-};
-
-const submitForm = (e) => {
-  e.preventDefault();
-  document.getElementById("form").submit();
 };

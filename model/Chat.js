@@ -15,8 +15,12 @@ const chatSchema = mongoose.Schema(
       },
     ],
     messages: [Message.schema],
+    unreadMessages: {
+      type: Number,
+      default: 0,
+    },
   },
-  { timeStamps: true }
+  { timeStamps: { createdAt: true, updatedAt: true } }
 );
 
 module.exports = mongoose.model("Chat", chatSchema);

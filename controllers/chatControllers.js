@@ -1,18 +1,34 @@
-const User = require("../model/Chat");
+const User = require("../model/User");
 const Chat = require("../model/Chat");
 
 const chatController = async (req, res) => {
-  const { id } = req.params;
+  const { param } = req.params;
   const { userID } = req.user;
-  const { otherParticipantID } = req.body;
 
-  const user = await User.findById(userID);
-  const otherParticipant = await User.findById(otherParticipantID);
-  const chat = await Chat.findById(id);
+  const [otherParticipantID, chatID] = param.split("&&&");
+
+  if (param === "logout") {
+    req.session.destroy((err) => {
+      if (err) {
+        return req.flash("error", "Something went wrong");
+      }
+      res.redirect("/auth/login");
+    });
+    return;
+  }
+
+  if (param === "delete") {
+    await Chat.findByIdAndDelete(chatID);
+  }
+
+  const [otherParticipant, chat] = await Promise.all([
+    User.findById(otherParticipantID),
+    Chat.findById(chatID),
+  ]);
 
   if (!chat) {
-    const newChat = await Chat.create({
-      _id: id,
+    await Chat.create({
+      _id: chatID,
       participants: [
         {
           _id: userID,
@@ -21,18 +37,20 @@ const chatController = async (req, res) => {
           _id: otherParticipantID,
         },
       ],
+      messages: [],
     });
   }
 
-  if (chat) {
-    console.log(chat);
-  }
+  const messages = chat?.messages || [];
 
+  const IDs = { userID, otherParticipantID };
   const otherParticipantUsername = otherParticipant.username;
 
   res.render("chat", {
     title: "Chat",
     otherParticipantUsername,
+    IDs,
+    messages,
     msg: { error: req.flash("error"), success: req.flash("success") },
   });
 };

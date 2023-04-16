@@ -11,19 +11,36 @@ module.exports = function (io) {
       socket.broadcast.emit("status", "online");
 
       socket.on("chatMessage", async (msg) => {
-        const chat = await Chat.findById(chatID);
-
+        const chat = await Chat.findById(chatID).lean();
         const to = chat.participants.find((otherID) => otherID !== msg.id);
-        const newMessage = await Message.create({
-          from: msg.id,
-          to: to,
-          messageText: msg.msg,
-        });
 
-        chat.messages.push(newMessage);
-        await chat.save();
+        try {
+          const newMessage = await Message.create({
+            from: msg.id,
+            to: to,
+            messageText: msg.msg,
+          });
 
-        socket.broadcast.to(chatID).emit("message", msg.msg);
+          await Chat.updateOne(
+            { _id: chatID },
+            { $push: { messages: newMessage }, $inc: { unreadMessages: 1 } }
+          );
+
+          socket.broadcast.to(chatID).emit("message", msg.msg);
+        } catch (err) {
+          console.error(err);
+        }
+      });
+
+      socket.on("seen", async () => {
+        try {
+          await Chat.updateOne(
+            { _id: chatID },
+            { $set: { unreadMessages: 0 } }
+          );
+        } catch (err) {
+          console.error(err);
+        }
       });
 
       socket.on("disconnect", () => {

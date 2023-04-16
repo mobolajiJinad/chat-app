@@ -2,19 +2,21 @@ const chatForm = document.querySelector(".chat_container");
 const chatsContainer = document.getElementById("main_chat");
 const verticalDots = document.getElementById("vertical_dots");
 
-const chatID = window.location.pathname.split("/")[2];
+const chatID = window.location.pathname.split("/")[2].split("&&&")[1];
 
 const socket = io();
+
+socket.emit("seen");
 
 socket.emit("joinChat", chatID);
 
 socket.on("status", (msg) => {
-  document.getElementById("status").innerText = msg;
+  document.getElementById("status").textContent = msg;
 });
 
 socket.on("message", (message) => {
   outputMessage(message, "received");
-  document.getElementById("status").innerText = "online";
+  document.getElementById("status").textContent = "online";
 });
 
 chatForm.addEventListener("submit", (e) => {
@@ -22,9 +24,9 @@ chatForm.addEventListener("submit", (e) => {
 
   const chatBox = e.target.elements.chat_box;
 
-  const msg = chatBox.value;
+  const msg = chatBox.value.trim();
 
-  if (msg && !msg.length <= 0) {
+  if (msg) {
     socket.emit("chatMessage", { msg, id: IDs.userID });
     outputMessage(msg, "sent");
   }
@@ -42,7 +44,7 @@ const outputMessage = (message, status) => {
     div.classList.add("message_container", "receiver");
   }
 
-  div.innerText = message;
+  div.textContent = message;
 
   chatsContainer.appendChild(div);
   chatsContainer.scrollTop = chatsContainer.scrollHeight;
