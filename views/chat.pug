@@ -30,7 +30,8 @@ html(lang='en')
         ul.menu 
           li 
             a(href="/chat/logout") Logout 
-            a(href="/chat/delete") Delete chat 
+            a(href=`/chat/${param}/delete`) Delete chat 
+            a(href="/chat/upload-profile-pic") Change profile picture
 
     main#main_chat
       

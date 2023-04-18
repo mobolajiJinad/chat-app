@@ -17,10 +17,6 @@ const chatController = async (req, res) => {
     return;
   }
 
-  if (param === "delete") {
-    await Chat.findByIdAndDelete(chatID);
-  }
-
   const [otherParticipant, chat] = await Promise.all([
     User.findById(otherParticipantID),
     Chat.findById(chatID),
@@ -50,6 +46,7 @@ const chatController = async (req, res) => {
     title: "Chat",
     otherParticipantUsername,
     IDs,
+    param,
     messages,
     msg: { error: req.flash("error"), success: req.flash("success") },
   });

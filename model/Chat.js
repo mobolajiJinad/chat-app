@@ -20,7 +20,7 @@ const chatSchema = mongoose.Schema(
       default: 0,
     },
   },
-  { timeStamps: { createdAt: true, updatedAt: true } }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Chat", chatSchema);

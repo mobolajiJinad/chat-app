@@ -6,9 +6,9 @@ const chatID = window.location.pathname.split("/")[2].split("&&&")[1];
 
 const socket = io();
 
-socket.emit("seen");
-
 socket.emit("joinChat", chatID);
+
+socket.emit("seen");
 
 socket.on("status", (msg) => {
   document.getElementById("status").textContent = msg;
