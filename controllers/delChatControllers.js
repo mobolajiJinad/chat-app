@@ -5,10 +5,12 @@ const deleteChatController = async (req, res) => {
   const { param } = req.params;
   const [otherParticipantID, chatID] = param.split("&&&");
 
-  await Chat.findByIdAndDelete(chatID);
-  // const messages = await Message.find();
+  const chat = await Chat.findById(chatID);
+  const messagesIDs = chat.messages.map((message) => message._id);
 
-  // console.log(messages);
+  await Message.deleteMany({ _id: { $in: messagesIDs } });
+
+  await Chat.deleteOne({ _id: chatID });
   res.redirect("/chat");
 };
 

@@ -24,14 +24,20 @@ a {
   margin-left: 1rem;
 }
 
+.left {
+  width: 65%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
 .username {
   font-size: 1.5rem;
   font-weight: 500;
 }
 
 .search-box {
-  margin-right: 1.25rem;
-  width: 50%;
+  width: 75%;
 }
 
 .search-input {
@@ -40,6 +46,51 @@ a {
   border: none;
   font-size: 1rem;
   border-radius: 0.5rem;
+}
+
+#vertical_dots {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+#vertical_dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #fff;
+  margin: 2px;
+}
+
+.menu {
+  position: absolute;
+  top: -100%;
+  right: 5px;
+  width: 50%;
+  padding: 10px 20px;
+  background-color: #4d744f;
+  border-radius: 7px;
+  list-style: none;
+  text-align: center;
+  transition: top 0.3s;
+}
+
+.menu a,
+.menu label {
+  padding: 9px 3px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.25rem;
+  display: block;
+  cursor: pointer;
+}
+
+.menu input {
+  display: none;
+}
+
+.show_menu {
+  top: 75px;
 }
 
 .chats {

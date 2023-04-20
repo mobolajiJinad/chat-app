@@ -16,8 +16,20 @@ html(lang='en')
 
     header.header
       span.username #{username}
-      .search-box
-        input.search-input(type='text', name='search_contacts', placeholder='Search contacts')
+      .left  
+        .search-box
+          input.search-input(type='text', name='search_contacts', placeholder='Search contacts')
+        nav 
+          #vertical_dots
+            .dot
+            .dot
+            .dot
+        
+          ul.menu 
+            li 
+              a(href="/chat-list/logout") Logout 
+              label(for="profilePic") Change profile pic
+              input(type="file", name="profilePic", id="profilePic")
 
     #wrapper 
       section.chats

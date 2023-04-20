@@ -1,8 +1,32 @@
 const newChatBtn = document.getElementById("new_chat");
 const body = document.querySelector("body");
+const verticalDots = document.getElementById("vertical_dots");
+const profilePic = document.getElementById("profilePic");
 const wrapper = document.getElementById("wrapper");
 
 const UUID_NAMESPACE_URL = "1b671a64-40d5-491e-99b0-da01ff1f3341";
+
+verticalDots.addEventListener("click", () => {
+  document.querySelector(".menu").classList.toggle("show_menu");
+});
+
+profilePic.addEventListener("change", async (e) => {
+  try {
+    const file = profilePic.files[0];
+
+    const form = new FormData();
+    form.append("profilePic", file);
+
+    fetch("/chat-list/upload-profile-pic", {
+      method: "POST",
+      body: form,
+    })
+      .then((res) => res.json())
+      .then((response) => console.log(response));
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 newChatBtn.addEventListener("click", (e) => {
   fetch(`/contacts/getList`, {

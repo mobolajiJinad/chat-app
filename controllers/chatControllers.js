@@ -7,16 +7,6 @@ const chatController = async (req, res) => {
 
   const [otherParticipantID, chatID] = param.split("&&&");
 
-  if (param === "logout") {
-    req.session.destroy((err) => {
-      if (err) {
-        return req.flash("error", "Something went wrong");
-      }
-      res.redirect("/auth/login");
-    });
-    return;
-  }
-
   const [otherParticipant, chat] = await Promise.all([
     User.findById(otherParticipantID),
     Chat.findById(chatID),
