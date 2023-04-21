@@ -3,6 +3,7 @@ const body = document.querySelector("body");
 const verticalDots = document.getElementById("vertical_dots");
 const profilePic = document.getElementById("profilePic");
 const wrapper = document.getElementById("wrapper");
+const searchInput = document.querySelector(".search-input");
 
 const UUID_NAMESPACE_URL = "1b671a64-40d5-491e-99b0-da01ff1f3341";
 
@@ -42,6 +43,21 @@ newChatBtn.addEventListener("click", (e) => {
     .catch((err) => console.log(err));
 });
 
+searchInput.addEventListener("keyup", (e) => {
+  const target = searchInput.value.toLowerCase();
+  const elements = Array.from(document.querySelector(".chats").children);
+
+  elements.forEach((element) => {
+    let username = element.querySelector(".username").textContent.toLowerCase();
+
+    if (!username.includes(target, 0)) {
+      element.style.display = "none";
+    } else {
+      element.style.display = "flex";
+    }
+  });
+});
+
 const createBody = (data) => {
   const section = document.createElement("section");
   section.classList.add("chats");
@@ -57,7 +73,7 @@ const createBody = (data) => {
     a.href = `/chat/${user.otherParticipantID}&&&${roomUUID}`;
 
     const innerHTML = `
-      <img class="profile-pic" src="/profile_pics/profile_pic.jpg" alt="Profile Picture">
+      <img class="profile-pic" src=${user.profilePic} alt="Profile Picture">
       <div class="chat-details">
         <h3 class="username">${user.username}</h3>
       </div>

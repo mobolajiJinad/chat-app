@@ -9,7 +9,12 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const path = require("path");
-const { authRoutes, chatRoutes, defRoutes } = require("./routes/routes");
+const {
+  authRoutes,
+  chatRoutes,
+  defRoutes,
+  chatListRoutes,
+} = require("./routes/routes");
 const { authMiddleware, guestMiddleware } = require("./middleware/auth");
 
 const app = express();
@@ -38,7 +43,8 @@ app.use(
 
 app.use(flash());
 
-app.use("/", authMiddleware, defRoutes);
+app.use("/", defRoutes);
+app.use("/chat-list", authMiddleware, chatListRoutes);
 app.use("/auth", guestMiddleware, authRoutes);
 app.use("/chat", authMiddleware, chatRoutes);
 
