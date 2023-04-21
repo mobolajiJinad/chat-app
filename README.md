@@ -4,11 +4,10 @@ A chat application.
 
 ## TODO
 
-1. Make the chat page layout.
+1. Make the chat page layout better.
 2. Change unread message algorithm.
-3. Delete messages also upon deleting chat.
-4. Work on search contacts functionality.
-5. Work on upload profile picture route.
+3. Work on search contacts functionality.
+4. Delete other users' pictures once changed.
 
 ## Contributing
 

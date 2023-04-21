@@ -38,7 +38,7 @@ app.use(
 
 app.use(flash());
 
-app.use("/", defRoutes);
+app.use("/", authMiddleware, defRoutes);
 app.use("/auth", guestMiddleware, authRoutes);
 app.use("/chat", authMiddleware, chatRoutes);
 
