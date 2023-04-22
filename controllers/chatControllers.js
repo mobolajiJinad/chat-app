@@ -12,29 +12,17 @@ const chatController = async (req, res) => {
     Chat.findById(chatID),
   ]);
 
-  if (!chat) {
-    await Chat.create({
-      _id: chatID,
-      participants: [
-        {
-          _id: userID,
-        },
-        {
-          _id: otherParticipantID,
-        },
-      ],
-      messages: [],
-    });
-  }
-
   const messages = chat?.messages || [];
 
   const IDs = { userID, otherParticipantID };
-  const otherParticipantUsername = otherParticipant.username;
+  const otherParticipantData = {
+    username: otherParticipant.username,
+    profilePic: otherParticipant.profilePicture,
+  };
 
   res.render("chat", {
     title: "Chat",
-    otherParticipantUsername,
+    otherParticipantData,
     IDs,
     param,
     messages,

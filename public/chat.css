@@ -31,21 +31,19 @@ img {
   align-items: center;
 }
 
-#chat_header .back_btn {
-  width: 25px;
-  height: 25px;
-  margin-right: 10px;
+.left .back_btn {
+  margin-right: 1.5rem;
   cursor: pointer;
 }
 
-#chat_header .profile_pic {
+.left .profile_pic {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   margin-right: 10px;
 }
 
-#chat_header h2 {
+.left h2 {
   font-size: 20px;
   font-weight: 500;
 }
@@ -138,6 +136,7 @@ img {
 
 #chat_box {
   width: calc(100% - 82px);
+  height: 90%;
   flex: 1;
   margin: 0 10px;
   padding: 5px 10px;

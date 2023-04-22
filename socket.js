@@ -8,16 +8,30 @@ module.exports = function (io) {
     socket.on("joinChat", (chatID) => {
       socket.join(chatID);
 
-      socket.broadcast.emit("status", "online");
+      socket.broadcast.to(chatID).emit("status", "online");
 
       socket.on("chatMessage", async (msg) => {
         const chat = await Chat.findById(chatID).lean();
-        const to = chat.participants.find((otherID) => otherID !== msg.id);
+
+        if (!chat) {
+          await Chat.create({
+            _id: chatID,
+            participants: [
+              {
+                _id: msg.id.userID,
+              },
+              {
+                _id: msg.id.otherParticipantID,
+              },
+            ],
+            messages: [],
+          });
+        }
 
         try {
           const newMessage = await Message.create({
-            from: msg.id,
-            to: to,
+            from: msg.id.userID,
+            to: msg.id.otherParticipantID,
             messageText: msg.msg,
           });
 
@@ -44,7 +58,7 @@ module.exports = function (io) {
       });
 
       socket.on("disconnect", () => {
-        socket.broadcast.emit("status", "offline");
+        socket.broadcast.to(chatID).emit("status", "offline");
         console.log("Client disconnected");
       });
     });

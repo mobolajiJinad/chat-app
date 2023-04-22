@@ -38,7 +38,7 @@ html(lang='en')
         else 
           each datum in data 
             a(href=`/chat/${datum.otherParticipantID}&&&${datum.id}` class="chat")
-              img.profile-pic(src=datum.profilePic, alt='Profile Picture')
+              img.profile-pic(src=datum.profilePic, alt='Profile Picture', srcset="/profile_pics/profile_pic.jpg")
               .chat-details 
                 h3.username #{datum.otherParticipantUsername}
                 p.message-preview #{datum.lastMessage}

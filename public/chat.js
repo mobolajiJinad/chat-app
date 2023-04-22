@@ -27,7 +27,10 @@ chatForm.addEventListener("submit", (e) => {
   const msg = chatBox.value.trim();
 
   if (msg) {
-    socket.emit("chatMessage", { msg, id: IDs.userID });
+    socket.emit("chatMessage", {
+      msg,
+      id: { userID: IDs.userID, otherParticipantID: IDs.otherParticipantID },
+    });
     outputMessage(msg, "sent");
   }
 
@@ -55,8 +58,6 @@ messages.forEach((message) => {
     outputMessage(message.messageText, "sent");
   } else if (message.from === IDs.otherParticipantID) {
     outputMessage(message.messageText, "received");
-  } else {
-    console.log("What");
   }
 });
 
