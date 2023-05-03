@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 const multer = require("multer");
 
 const User = require("../model/User");
@@ -63,7 +64,7 @@ router.post(
     const user = await User.findById(userID);
 
     let filePath = file.path.split("\\");
-    filePath = `${filePath[1]}\\${filePath[2]}`;
+    filePath = `/${filePath[1]}/${filePath[2]}`;
 
     user.profilePicture = filePath;
     await user.save();

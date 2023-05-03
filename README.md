@@ -5,7 +5,6 @@ A chat application.
 ## TODO
 
 1. Change unread message algorithm.
-2. Delete other users' pictures once changed.
 
 ## Contributing
 

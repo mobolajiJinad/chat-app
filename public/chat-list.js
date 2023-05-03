@@ -73,7 +73,7 @@ const createBody = (data) => {
     a.href = `/chat/${user.otherParticipantID}&&&${roomUUID}`;
 
     const innerHTML = `
-      <img class="profile-pic" src=${user.profilePic} alt="Profile Picture", srcset="/profile_pics/profile_pic.jpg">
+      <img class="profile-pic" src=${user.profilePic} alt="Profile Picture">
       <div class="chat-details">
         <h3 class="username">${user.username}</h3>
       </div>
