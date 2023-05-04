@@ -16,6 +16,7 @@ const {
   chatListRoutes,
 } = require("./routes/routes");
 const { authMiddleware, guestMiddleware } = require("./middleware/auth");
+const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 const server = http.createServer(app);
@@ -47,6 +48,8 @@ app.use("/", defRoutes);
 app.use("/chat-list", authMiddleware, chatListRoutes);
 app.use("/auth", guestMiddleware, authRoutes);
 app.use("/chat", authMiddleware, chatRoutes);
+
+app.use(errorHandler);
 
 const port = process.env.PORT || 5000;
 
