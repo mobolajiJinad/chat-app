@@ -40,6 +40,7 @@ chatForm.addEventListener("submit", (e) => {
 
 const outputMessage = (message, status) => {
   const div = document.createElement("div");
+  div.style.whiteSpace = "pre-line";
 
   if (status === "sent") {
     div.classList.add("message_container", "sender");

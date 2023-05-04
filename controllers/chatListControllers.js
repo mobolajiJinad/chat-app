@@ -41,7 +41,7 @@ const getChatList = async (req, res) => {
         lastMessage:
           lastMessage.length <= 23
             ? lastMessage
-            : `${lastMessage.slice(0, 23)}...`,
+            : `${lastMessage.slice(0, 21)}...`,
       };
     })
   );
