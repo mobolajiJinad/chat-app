@@ -5,6 +5,7 @@ A chat application.
 ## TODO
 
 1. Change unread message algorithm.
+2. Add delete account path.
 
 ## Contributing
 
