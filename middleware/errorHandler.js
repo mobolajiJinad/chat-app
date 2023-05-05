@@ -11,6 +11,7 @@ const errorHandler = (err, req, res, next) => {
     title: "Error",
     message,
     error: err,
+    msg: { error: req.flash("error"), success: req.flash("success") },
   });
 };
 

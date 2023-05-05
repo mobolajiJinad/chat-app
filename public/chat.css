@@ -24,6 +24,12 @@ img {
   padding: 20px;
   background-color: #4caf50;
   color: #fff;
+
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  width: 100%;
+  z-index: 999;
 }
 
 #chat_header .left {
@@ -126,6 +132,10 @@ img {
   align-items: center;
   padding: 5px 10px;
   background-color: #fff;
+
+  position: sticky;
+  bottom: 0;
+  left: 0;
 }
 
 .chat_container button {

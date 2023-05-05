@@ -16,7 +16,8 @@ html(lang='en')
     
     header#chat_header
       .left
-        a.back_btn(href="/chat") Back 
+        a.back_btn(href="/chat")
+          img(src="/images/back_btn.jpg", alt="")
         img.profile_pic(src=otherParticipantData.profilePic, alt='Profile picture')
         div 
           h2=otherParticipantData.username
