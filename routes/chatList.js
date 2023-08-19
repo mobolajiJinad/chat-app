@@ -4,6 +4,8 @@ const fs = require("fs");
 const multer = require("multer");
 
 const User = require("../model/User");
+const Chat = require("../model/Chat");
+const Message = require("../model/Message");
 
 const router = express.Router();
 
@@ -72,5 +74,18 @@ router.post(
     res.status(200).json({ msg: "Profile picture saved" });
   }
 );
+
+router.route("/delete-account").get(async (req, res) => {
+  const { userID } = req.user;
+
+  await User.findByIdAndDelete(userID);
+
+  req.session.destroy((err) => {
+    if (err) {
+      req.flash("error", "Something went wrong");
+    }
+    res.redirect("/auth/signup");
+  });
+}); 
 
 module.exports = router;

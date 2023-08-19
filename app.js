@@ -74,3 +74,19 @@ const start = async () => {
 };
 
 start();
+
+process.on("SIGINT", () => {
+  console.log(
+    "Received SIGINT signal. Closing server and database connection..."
+  );
+
+  mongoose.connection.close((err) => {
+    if (err) {
+      console.error("Error closing MongoDB connection:", err);
+    } else {
+      console.log("MongoDB connection closed.");
+    }
+  });
+
+  process.exit(0);
+});

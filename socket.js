@@ -3,8 +3,6 @@ const Chat = require("./model/Chat");
 
 module.exports = function (io) {
   io.on("connection", (socket) => {
-    console.log("New client connected");
-
     socket.on("joinChat", (chatID) => {
       socket.join(chatID);
 

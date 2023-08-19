@@ -9,7 +9,7 @@ const loginController = async (req, res) => {
     return res.redirect("/auth/login");
   }
 
-  const isValidPassword = user.validatePassword(password);
+  const isValidPassword = await user.validatePassword(password);
   if (!isValidPassword) {
     req.flash("error", "Invalid password");
     return res.redirect("/auth/login");
