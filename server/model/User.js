@@ -7,6 +7,10 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
 });
 
+userSchema.methods.generateJWT = function () {
+  return jwt.sign({ userID: this._id }, process.env.JWT_SECRET, { expiresIn: "3d" });
+};
+
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();
@@ -16,10 +20,6 @@ userSchema.pre("save", async function (next) {
   this.password = hashedPassword;
   next();
 });
-
-userSchema.methods.generateJWT = function () {
-  return jwt.sign({ userID: this._id }, process.env.JWT_SECRET, { expiresIn: "3d" });
-};
 
 userSchema.methods.validatePassword = async function (password) {
   return await bcrypt.compare(password, this.password);

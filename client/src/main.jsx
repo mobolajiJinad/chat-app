@@ -3,12 +3,29 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Signup from "./pages/Signup/Signup";
+import Login from "./pages/Login/Login";
+import Root from "./pages/Root/Root";
+import Index from "./pages/Root/Index";
+
 import "./index.css";
+import Chat from "./pages/Root/Chat";
 
 const router = createBrowserRouter([
   {
+    path: "/",
+    element: <Root />,
+    children: [
+      { index: true, element: <Index /> },
+      { path: "chat/:chatID", element: <Chat /> },
+    ],
+  },
+  {
     path: "/auth/signup",
     element: <Signup />,
+  },
+  {
+    path: "/auth/login",
+    element: <Login />,
   },
   // {
   //   path: "*",
