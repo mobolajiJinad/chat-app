@@ -1,47 +1,20 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { v5 as uuidv5 } from "uuid";
 
 import SearchImg from "../../assets/search.svg";
 import KebabMenuImg from "../../assets/kebab-menu.png";
 
-const UUID_NAMESPACE_URL = "1b671a64-40d5-491e-99b0-da01ff1f3341";
-
-const ContactList = ({ data, userID, username, token }) => {
-  const [allUsers, setAllUsers] = useState([]);
+const ContactList = ({ data, username }) => {
   const [searchInput, setSearchInput] = useState("");
-  const [showAllUsers, setShowAllUsers] = useState(false);
-
-  const handleNewChatClick = () => {
-    // Fetch all users
-    axios
-      .post(
-        "http://localhost:5000/contacts/getAll",
-        { userID },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        },
-      )
-      .then((response) => {
-        setAllUsers(response.data.otherUsersData);
-        setShowAllUsers((prev) => !prev);
-      })
-      .catch((error) => console.error(error));
-  };
 
   const handleSearchInputChange = (e) => {
     setSearchInput(e.target.value.toLowerCase());
   };
 
-  const filteredUsers = showAllUsers
-    ? allUsers.filter((user) =>
-        user.otherParticipantUsername.toLowerCase().includes(searchInput),
-      )
-    : data.filter((user) => user.username.toLowerCase().includes(searchInput));
+  const filteredUsers = data.filter((user) =>
+    user.username.toLowerCase().includes(searchInput),
+  );
 
   return (
     <div className="h-screen w-full">
@@ -61,24 +34,12 @@ const ContactList = ({ data, userID, username, token }) => {
           )}
 
           {filteredUsers.map((user) => {
-            let roomUUID;
-
-            if (showAllUsers) {
-              const sortedIDs = [userID, user.otherParticipantID].sort();
-              const idString = sortedIDs.join("");
-
-              roomUUID = uuidv5(idString, UUID_NAMESPACE_URL);
-            }
-
             return (
               <Link
                 className="flex items-center justify-between border-b border-solid border-b-[#ccc] px-4 py-3 hover:bg-[#f2f2f2]"
                 key={user.otherParticipantID}
-                to={`/chat/${user.otherParticipantID}&&&${
-                  showAllUsers ? roomUUID : user.id
-                }`}
+                to={`/chat/${user.otherParticipantID}&&&${user.id}`}
               >
-                {/* {user.id is actually the chatID which we'll create a new one if it's a new chat} */}
                 <img
                   src={user.otherParticipantProfilePic}
                   alt="Profile Picture"
@@ -107,18 +68,13 @@ const ContactList = ({ data, userID, username, token }) => {
           })}
         </section>
 
-        <NewChatButton handleNewChatClick={handleNewChatClick} />
+        <NewChatButton />
       </div>
     </div>
   );
 };
 
-const Header = ({
-  username,
-  searchInput,
-  setSearchInput,
-  handleSearchInputChange,
-}) => {
+export const Header = ({ username, searchInput, handleSearchInputChange }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
 
@@ -180,7 +136,7 @@ const Header = ({
           <ul
             className={`absolute ${
               isMenuOpen ? "top-[4.5rem]" : "-top-60"
-            } right-1 z-50 w-1/2 list-none rounded-lg bg-[#4caf50] px-5 py-3 text-center transition-all duration-300 `}
+            } right-1 z-50 w-3/5 list-none rounded-lg bg-[#4caf50] px-3 py-3 text-center transition-all duration-300 `}
           >
             <li>
               <a
@@ -215,14 +171,14 @@ const Header = ({
   );
 };
 
-const NewChatButton = ({ handleNewChatClick }) => {
+const NewChatButton = () => {
   return (
-    <div
-      onClick={() => handleNewChatClick()}
+    <Link
+      to="/chat/new"
       className="absolute bottom-4 right-4 flex h-14 w-14 items-center justify-center rounded-[50%] bg-[#4caf50]"
     >
       <p className="cursor-pointer pb-3 text-7xl leading-10 text-white">+</p>
-    </div>
+    </Link>
   );
 };
 

@@ -10,6 +10,7 @@ const authMiddleware = require("./middleware/auth");
 const errorHandler = require("./middleware/errorHandler");
 const authRoutes = require("./routes/authRoutes");
 const contactRoutes = require("./routes/contactRoutes");
+const chatRoutes = require("./routes/chatRoutes");
 
 const app = express();
 const server = http.createServer(app);
@@ -28,6 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 require("./socket")(io);
 
 app.use("/contacts", authMiddleware, contactRoutes);
+app.use("/chat", authMiddleware, chatRoutes);
 app.use("/auth", authRoutes);
 
 app.use(errorHandler);

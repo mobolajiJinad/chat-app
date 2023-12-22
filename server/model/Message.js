@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const messageSchema = mongoose.Schema(
   {
+    messageID: {
+      type: mongoose.Schema.Types.UUID,
+      required: true,
+    },
     from: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

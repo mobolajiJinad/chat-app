@@ -72,6 +72,7 @@ router.route("/getAll").post(async (req, res) => {
 
     res.status(StatusCodes.OK).json({ otherUsersData });
   } catch (error) {
+    console.error(error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
   }
 });
