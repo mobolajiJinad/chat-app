@@ -28,6 +28,25 @@ const Root = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const onConnect = () => {
+      setIsConnected(true);
+    };
+
+    const onDisconnect = () => {
+      setIsConnected(false);
+    };
+
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+
+    // Cleanup event listeners when the component unmounts
+    return () => {
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+    };
+  }, []);
+
+  useEffect(() => {
     try {
       if (!token || token.length <= 0) {
         navigate("/auth/login");
@@ -59,25 +78,6 @@ const Root = () => {
     }
   }, [navigate, token]);
 
-  useEffect(() => {
-    const onConnect = () => {
-      setIsConnected(true);
-    };
-
-    const onDisconnect = () => {
-      setIsConnected(false);
-    };
-
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-
-    // Cleanup event listeners when the component unmounts
-    return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-    };
-  }, []);
-
   const getData = async (token) => {
     try {
       const response = await axios.get("http://localhost:5000/contacts", {
@@ -108,7 +108,13 @@ const Root = () => {
               : "w-screen"
           } md:w-1/2 lg:w-2/5`}
         >
-          <ContactList username={username} data={data} />
+          <ContactList
+            username={username}
+            data={data}
+            userID={userID}
+            token={token}
+            socket={socket}
+          />
         </div>
 
         <div
@@ -118,7 +124,7 @@ const Root = () => {
               : "hidden"
           } md:block md:w-1/2 lg:w-3/5`}
         >
-          <Outlet context={[socket, token, username, userID]} />
+          <Outlet context={[socket, token]} />
         </div>
       </div>
     </>

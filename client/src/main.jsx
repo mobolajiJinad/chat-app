@@ -6,10 +6,8 @@ import Signup from "./pages/Signup/Signup";
 import Login from "./pages/Login/Login";
 import Root from "./pages/Root/Root";
 import Index from "./pages/Root/Index";
-import NewContacts from "./pages/Root/NewContacts";
-
-import "./index.css";
 import Chat from "./pages/Root/Chat";
+import "./index.css";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +15,6 @@ const router = createBrowserRouter([
     element: <Root />,
     children: [
       { index: true, element: <Index /> },
-      { path: "chat/new", element: <NewContacts /> },
       { path: "chat/:chatID", element: <Chat /> },
     ],
   },

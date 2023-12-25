@@ -36,7 +36,7 @@ const Chat = () => {
     socket.on("message", (message) => {
       setMessages((prevMessages) => [
         ...prevMessages,
-        { textContent: message, from: IDs.otherParticipantID },
+        { messageText: message, from: IDs.otherParticipantID },
       ]);
     });
 
@@ -71,19 +71,25 @@ const Chat = () => {
     e.preventDefault();
 
     if (chatMessage.trim()) {
-      socket.emit("chatMessage", {
-        chatMessage,
-        id: {
-          userID: IDs.userID,
-          otherParticipantID: IDs.otherParticipantID,
+      socket.emit(
+        "chatMessage",
+        {
+          chatMessage,
+          id: {
+            userID: IDs.userID,
+            otherParticipantID: IDs.otherParticipantID,
+          },
+          messageID,
         },
-        messageID,
-      });
+        () => {
+          console.log("It worked");
+        },
+      );
 
       setMessages((prevMessages) => [
         ...prevMessages,
         {
-          textContent: chatMessage,
+          messageText: chatMessage,
           from: IDs.userID,
           messageID: createNewID(chatMessage),
         },
@@ -106,7 +112,7 @@ const Chat = () => {
   };
 
   return (
-    <>
+    <div className="bg-[#e5ddd5]">
       <header
         id="chat_header"
         className="sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-[#4caf50] p-5 text-white"
@@ -162,7 +168,7 @@ const Chat = () => {
         ref={chatContainerRef}
       >
         {messages.length > 0 &&
-          messages.map((message) => (
+          messages.map((message, index) => (
             <div
               style={{ whiteSpace: "pre-line" }}
               className={
@@ -170,9 +176,10 @@ const Chat = () => {
                   ? "m-1 max-w-[50%] self-end break-words rounded-lg bg-[#dcf8c6] p-2 text-base font-medium"
                   : "m-1 max-w-[50%] self-start break-words rounded-lg bg-white p-2 text-base font-medium"
               }
-              key={message.messageID}
+              key={index}
+              // key={message.messageID}
             >
-              {message.textContent}
+              {message.messageText}
             </div>
           ))}
       </main>
@@ -202,7 +209,7 @@ const Chat = () => {
           />
         </button>
       </form>
-    </>
+    </div>
   );
 };
 export default Chat;

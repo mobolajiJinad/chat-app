@@ -29,7 +29,7 @@ router.route("/").get(async (req, res) => {
           (user) => user._id.toString() === otherParticipant._id.toString()
         ).profilePicture;
 
-        const lastMessage = chat.messages.pop().messageText;
+        const lastMessage = chat.messages.length > 0 ? chat.messages.pop().messageText : "";
 
         return {
           id: chat._id,
@@ -52,6 +52,7 @@ router.route("/").get(async (req, res) => {
 
     return res.status(StatusCodes.OK).json({ username, userID, data });
   } catch (error) {
+    console.error(error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
   }
 });
